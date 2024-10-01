@@ -21,7 +21,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
 
       # Custom derivation for pandarallel
-      pandarallel = pkgs.python3Packages.buildPythonPackage rec {
+      pandarallel = pkgs.python311Packages.buildPythonPackage rec {
         pname = "pandarallel";
         version = "1.6.5";
 
@@ -30,7 +30,7 @@
           sha256 = "HC35j/ZEHorhP/QozuuqfsQtcx9/lyxBzk/e8dOt9kA=";
         };
 
-        propagatedBuildInputs = with pkgs.python3Packages; [ pandas dill psutil pandarallel ];
+        propagatedBuildInputs = with pkgs.python311Packages; [ pandas dill psutil ];
 
         meta = with pkgs.lib; {
           description = "An efficient parallel computing library for pandas";
@@ -67,7 +67,7 @@
           src = ./.;
           nativeBuildInputs = [ pkgs.makeWrapper ];
           buildInputs = kartografDeps;
-          propagatedBuildInputs = [ kartografDeps ];
+          propagatedBuildInputs = [ rpki-cli.defaultPackage.${system} ];
           buildPhase = ''
             mkdir -p $out/lib/kartograf
             cp -r ${./kartograf}/* $out/lib/kartograf/
@@ -79,7 +79,7 @@
           '';
           fixupPhase = ''
             wrapProgram $out/bin/kartograf \
-              --set PYTHONPATH $out/lib:$PYTHONPATH
+              --set PYTHONPATH ${pandarallel}/${pkgs.python311.sitePackages}:$out/lib:$PYTHONPATH
             wrapProgram $out/bin/kartograf \
               --set PATH ${rpki-cli.defaultPackage.${system}}/bin:$PATH
           '';
