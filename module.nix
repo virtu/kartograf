@@ -63,6 +63,7 @@ in
 
     systemd.services.kartograf = {
       description = "kartograf";
+      wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
       serviceConfig = {
         Environment = "PYTHONUNBUFFERED=1";
