@@ -30,7 +30,7 @@
           sha256 = "HC35j/ZEHorhP/QozuuqfsQtcx9/lyxBzk/e8dOt9kA=";
         };
 
-        propagatedBuildInputs = with pkgs.python3Packages; [ pandas dill psutil ];
+        propagatedBuildInputs = with pkgs.python3Packages; [ pandas dill psutil pandarallel ];
 
         meta = with pkgs.lib; {
           description = "An efficient parallel computing library for pandas";
@@ -67,7 +67,7 @@
           src = ./.;
           nativeBuildInputs = [ pkgs.makeWrapper ];
           buildInputs = kartografDeps;
-          propagatedBuildInputs = [ rpki-cli.defaultPackage.${system} ];
+          propagatedBuildInputs = [ kartografDeps ];
           buildPhase = ''
             mkdir -p $out/lib/kartograf
             cp -r ${./kartograf}/* $out/lib/kartograf/
